@@ -49,6 +49,7 @@ class RNSDropDown extends React.Component {
           },
           shadowRadius: 5,
           shadowOpacity: 1.0,
+          
         }}
         adjustFrame={params => {
           // eslint-disable-next-line no-param-reassign
@@ -85,13 +86,13 @@ class RNSDropDown extends React.Component {
 const styles = {
   container: {
     height: 40,
-    borderWidth: 1,
+    borderWidth: .5,
     borderColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
     flexDirection: 'row',
-    borderRadius: 5,
+    borderRadius: 20,
   },
   icon: {
     marginLeft: 10,

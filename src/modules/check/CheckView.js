@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 
 import { fonts, colors } from '../../styles';
-import { TextInput, Button } from '../../components';
+import { TextInput, Button,Dropdown } from '../../components';
 import { Colors } from 'react-native-paper';
 
 const FORM_STATES = {
@@ -23,12 +23,23 @@ const FORM_STATES = {
 export default class AuthScreen extends React.Component {
   state = {
     anim: new Animated.Value(0),
+    currentStep:1,
 
     // Current visible form
     formState: FORM_STATES.LOGIN,
     isKeyboardVisible: false,
   };
-
+  nextStep() {
+    console.log("Next")
+    let currentStep = this.state.currentStep
+    currentStep = currentStep >= 2? 3 : currentStep+1;
+    this.setState({currentStep})
+  }
+  prevStep() {
+    let currentStep = this.state.currentStep
+    currentStep = currentStep <= 2? 1 : currentStep-1;
+    this.setState({currentStep})
+  }
   componentDidMount() {
     this.keyboardDidShowListener = Keyboard.addListener(
       Platform.select({ android: 'keyboardDidShow', ios: 'keyboardWillShow' }),
@@ -102,37 +113,68 @@ export default class AuthScreen extends React.Component {
           <Animated.View
             style={[styles.section, styles.middle, this.fadeIn(700, -20)]}
           >
-            <TextInput
+            {this.state.currentStep ==1?<TextInput
+              
               placeholder={
                 this.state.formState === FORM_STATES.LOGIN
                   ? 'Request ID'
-                  : 'Username'
+                  : 'Full Name'
               }
               style={styles.textInput}
               autoCapitalize="none"
               autoCorrect={false}
               placeholderTextColor={colors.primary}
               
-            />
-
+            />:<></>}
             {this.state.formState === FORM_STATES.REGISTER && (
-              <TextInput
+              <>
+                
+              {this.state.currentStep ==2? <TextInput
+                currentStep={1}
                 placeholderTextColor={colors.primary}
                 placeholder="Email"
                 style={styles.textInput}
                 autoCapitalize="none"
                 autoCorrect={false}
                 keyboardType="email-address"
-              />
+              />:<></>}
+             { this.state.currentStep ==1? <TextInput
+                currentStep={1}
+                placeholderTextColor={colors.primary}
+                placeholder="User ID"
+                secureTextEntry
+                style={styles.textInput}
+              />:<></>}
+              {this.state.currentStep ==1? <Dropdown
+                style={[styles.textInput,{width:"82%",alignSelf:'center'}]}
+                placeholder="Select Plateform"
+                onSelect={() => {}}
+                items={['Liyeplimal', 'Limarket']}
+              />:<></>}
+                {this.state.currentStep ==2? <Dropdown
+                style={[styles.textInput,{width:"82%",alignSelf:'center'}]}
+                placeholder="Select Country"
+                onSelect={() => {}}
+                items={['Cameroon', 'Others']}
+              />:<></>}
+             { this.state.currentStep ==2? <TextInput
+                currentStep={3}
+                placeholderTextColor={colors.primary}
+                placeholder="Phone Number"
+                secureTextEntry
+                style={styles.textInput}
+              />:<></>}
+              {this.state.currentStep ==3? <Dropdown
+                style={[styles.textInput,{width:"82%",alignSelf:'center'}]}
+                placeholder="Select Issue"
+                onSelect={() => {}}
+                items={['Account verify', 'Commission issue']}
+              />:<></>}
+           
+            </>
             )}
-            {this.state.formState === FORM_STATES.REGISTER && (
-             <TextInput
-              placeholderTextColor={colors.primary}
-              placeholder="Password"
-              secureTextEntry
-              style={styles.textInput}
-            />
-            )}
+           
+            
             <Animated.View
               style={[styles.section, styles.bottom, this.fadeIn(700, -20)]}
             >
@@ -141,14 +183,24 @@ export default class AuthScreen extends React.Component {
                 textColor={colors.white}
                 secondary
                 rounded
-                style={{ alignSelf: 'stretch', marginBottom: 10 }}
+                style={{ alignSelf: 'stretch', marginBottom: 10}}
                 caption={
                   this.state.formState === FORM_STATES.LOGIN
                     ? 'Check'
-                    : 'Submit'
+                    : 'Next'
                 }
-                onPress={() => this.props.navigation.goBack()}
+                onPress={() => this.nextStep()}
               />
+              {this.state.currentStep>1? <Button
+                bgColor="blue"
+                textColor={colors.white}
+                secondary
+                rounded
+                style={{ alignSelf: 'stretch', marginBottom: 10}}
+                caption='Previous'
+                onPress={() => this.prevStep()}
+              />:null}
+
 
               
               {!this.state.isKeyboardVisible && (
@@ -167,6 +219,7 @@ export default class AuthScreen extends React.Component {
                     style={{
                       color: colors.primary,
                       fontFamily: fonts.primaryRegular,
+                      
                     }}
                   >
                     {isRegister
@@ -204,6 +257,7 @@ const styles = StyleSheet.create({
     
   },
   section: {
+    marginTop:-10,
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -217,6 +271,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'stretch',
     paddingBottom: Platform.OS === 'android' ? 30 : 0,
+    
   },
   last: {
     justifyContent: 'flex-end',
@@ -224,6 +279,7 @@ const styles = StyleSheet.create({
   textInput: {
     alignSelf: 'stretch',
     marginTop: 20,
+    
     
   },
   logo: {

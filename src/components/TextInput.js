@@ -21,7 +21,7 @@ const RNSTextInput = ({
     <View style={{ alignSelf: 'stretch', flexDirection: 'column' }}>
       <TextInput
         placeholderTextColor={placeholderTextColor || colors.textInputColor}
-        underlineColorAndroid={placeholderTextColor|| colors.textInputColor}
+        underlineColorAndroid
         {...restProps}
         style={finalStyle}
       />
@@ -41,16 +41,18 @@ const styles = StyleSheet.create({
     fontFamily: fonts.primaryRegular,
     ...Platform.select({
       android: {
-        paddingLeft: 5,
+        paddingLeft: 15,
         opacity: 0.9,
+        
       },
     }),
   },
   bordered: {
     borderWidth: 0.5,
-    borderColor: colors.lightGray,
+    borderColor: colors.primary,
     borderRadius: 20,
     paddingHorizontal: 20,
+    
   },
   dark: {
     color: colors.gray,
