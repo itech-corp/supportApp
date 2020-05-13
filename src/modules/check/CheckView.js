@@ -125,7 +125,7 @@ export default class AuthScreen extends React.Component {
               autoCorrect={false}
               placeholderTextColor={colors.primary}
               
-            />:<></>}
+            />:null}
             {this.state.formState === FORM_STATES.REGISTER && (
               <>
                 
@@ -137,20 +137,20 @@ export default class AuthScreen extends React.Component {
                 autoCapitalize="none"
                 autoCorrect={false}
                 keyboardType="email-address"
-              />:<></>}
+              />:null}
              { this.state.currentStep ==1? <TextInput
                 currentStep={1}
                 placeholderTextColor={colors.primary}
                 placeholder="User ID"
                 secureTextEntry
                 style={styles.textInput}
-              />:<></>}
+              />:null}
               {this.state.currentStep ==1? <Dropdown
                 style={[styles.textInput,{width:"82%",alignSelf:'center'}]}
                 placeholder="Select Plateform"
                 onSelect={() => {}}
                 items={['Liyeplimal', 'Limarket']}
-              />:<></>}
+              />:null}
                 {this.state.currentStep ==2? <Dropdown
                 style={[styles.textInput,{width:"82%",alignSelf:'center'}]}
                 placeholder="Select Country"
@@ -169,8 +169,15 @@ export default class AuthScreen extends React.Component {
                 placeholder="Select Issue"
                 onSelect={() => {}}
                 items={['Account verify', 'Commission issue']}
-              />:<></>}
-           
+              />:null}
+              {this.state.currentStep ==3? <TextInput
+              
+              placeholder="Issue description"
+              style={styles.textInput}
+              autoCapitalize="none"
+              autoCorrect={false}
+              placeholderTextColor={colors.primary}
+              />:null}
             </>
             )}
            
@@ -187,7 +194,7 @@ export default class AuthScreen extends React.Component {
                 caption={
                   this.state.formState === FORM_STATES.LOGIN
                     ? 'Check'
-                    : 'Next'
+                    : this.state.currentStep == 3 ?'Submit':'Next'
                 }
                 onPress={() => this.nextStep()}
               />
